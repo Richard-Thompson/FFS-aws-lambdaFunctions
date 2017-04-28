@@ -17,7 +17,7 @@ exports.handler = (event, context, callback) => {
       .then(function (rows) {
         let response = {
           statusCode: '200',
-          body: JSON.stringify({rows: rows }),
+          body: JSON.stringify(manipulateData(rows) ),
           headers: {
           'Content-Type': 'application/json',
         }
@@ -30,4 +30,12 @@ exports.handler = (event, context, callback) => {
         return callback(error);
       });
     
+ };
+ 
+ const manipulateData = function (data) {
+  const manipulatedData = {};
+  data.forEach(function (record) {
+     manipulatedData[record.base_url] = record.reliability;
+  });
+ return manipulatedData;
  };
